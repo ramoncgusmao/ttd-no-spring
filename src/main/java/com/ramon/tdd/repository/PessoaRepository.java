@@ -1,5 +1,6 @@
 package com.ramon.tdd.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ramon.tdd.model.Pessoa;
+import com.ramon.tdd.repository.filtro.PessoaFiltro;
+import com.ramon.tdd.repository.helper.PessoaRepositoryQueries;
 
 @Repository
-public interface PessoaRepository extends JpaRepository<Pessoa, Integer>{
+public interface PessoaRepository extends JpaRepository<Pessoa, Integer>, PessoaRepositoryQueries{
 
 
 	Optional<Pessoa> findByCpf(String cpf);
