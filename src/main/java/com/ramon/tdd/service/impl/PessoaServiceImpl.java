@@ -1,5 +1,6 @@
 package com.ramon.tdd.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ramon.tdd.model.Pessoa;
 import com.ramon.tdd.model.Telefone;
 import com.ramon.tdd.repository.PessoaRepository;
+import com.ramon.tdd.repository.filtro.PessoaFiltro;
 import com.ramon.tdd.service.PessoaService;
 import com.ramon.tdd.service.TelefoneNaoEncontradoException;
 import com.ramon.tdd.service.UnicidadeTelefoneException;
@@ -46,6 +48,12 @@ public class PessoaServiceImpl implements PessoaService {
 		
 		Optional<Pessoa> pessoa = repository.findByTelefoneDddAndTelefoneNumero(telefone.getDdd(), telefone.getNumero());
 		return pessoa.orElseThrow(() ->  new TelefoneNaoEncontradoException("Não existe pessoa com o telefone (" + telefone.getDdd() +") "+ telefone.getNumero()) );
+	}
+
+	@Override
+	public List<Pessoa> filtrar(PessoaFiltro pessoaFiltro) {
+		// TODO Auto-generated method stub
+		return repository.filter(pessoaFiltro);
 	}
 	
 

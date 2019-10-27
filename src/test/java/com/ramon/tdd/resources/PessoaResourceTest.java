@@ -1,6 +1,7 @@
 package com.ramon.tdd.resources;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
 
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import com.ramon.tdd.SpringBootComTddApplicationTests;
 import com.ramon.tdd.model.Pessoa;
 import com.ramon.tdd.model.Telefone;
+import com.ramon.tdd.repository.filtro.PessoaFiltro;
 
 import io.restassured.http.ContentType;
 
@@ -106,6 +108,30 @@ public class PessoaResourceTest extends SpringBootComTddApplicationTests{
 			.body("erro", equalTo("Já existe pessoa cadastrada com o CPF '86730543540'"));
 			
 		
+	}
+	
+	
+	@Test 
+	public void deveFiltrarPessoasPeloNome() throws Exception {
+		
+		PessoaFiltro filtro = new PessoaFiltro();
+		filtro.setNome("a");
+		
+		
+		given()
+			.request()
+			.header("Accept", ContentType.ANY)
+			.header("Content-type", ContentType.JSON)
+			.body(filtro)
+		.when()
+		.post("/pessoas/filtrar")
+		.then()
+			.log().body()
+		.and()
+			.statusCode(HttpStatus.OK.value())
+			.body("nome", containsInAnyOrder("Thiago", "Iago", "Cauê"));
+		
+			
 	}
 }
 

@@ -1,6 +1,7 @@
 package com.ramon.tdd.Resource;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ramon.tdd.model.Pessoa;
 import com.ramon.tdd.model.Telefone;
+import com.ramon.tdd.repository.filtro.PessoaFiltro;
 import com.ramon.tdd.service.PessoaService;
 import com.ramon.tdd.service.TelefoneNaoEncontradoException;
 import com.ramon.tdd.service.UnicidadeTelefoneException;
@@ -58,6 +60,14 @@ public class PessoaResource {
 	}
 	
 	
+	@PostMapping("/filtrar")
+	public ResponseEntity<List<Pessoa>> filtrar(@RequestBody PessoaFiltro pessoaFiltro){
+		
+		List<Pessoa> pessoas = pessoaService.filtrar(pessoaFiltro);
+		
+		return new ResponseEntity<List<Pessoa>>(pessoas, HttpStatus.OK);
+	}
+	
 	@ExceptionHandler({UnicidadeCpfException.class})
 	public ResponseEntity<Erro> handleUnicidadeCpfException(UnicidadeCpfException e){
 		return new ResponseEntity<Erro> (new Erro(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -69,6 +79,8 @@ public class PessoaResource {
 		return new ResponseEntity<Erro> (new Erro(e.getMessage()), HttpStatus.NOT_FOUND);
 		
 	}
+	
+	
 	class Erro{
 		private final String erro;
 		
