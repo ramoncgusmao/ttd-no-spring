@@ -30,7 +30,7 @@ public class PessoaServiceImpl implements PessoaService {
 		String ddd = pessoa.getTelefones().get(0).getDdd();
 		String numero = pessoa.getTelefones().get(0).getNumero();
 		
-		optional = repository.buscarPorTelefoneEDdd(ddd, numero);
+		optional = repository.findByTelefoneDddAndTelefoneNumero(ddd, numero);
 		
 		if( optional.isPresent()) {
 				throw new UnicidadeTelefoneException();
@@ -41,7 +41,7 @@ public class PessoaServiceImpl implements PessoaService {
 	@Override
 	public Pessoa buscarPorTelefone(Telefone telefone) throws TelefoneNaoEncontradoException {
 		
-		Optional<Pessoa> pessoa = repository.buscarPorTelefoneEDdd(telefone.getDdd(), telefone.getNumero());
+		Optional<Pessoa> pessoa = repository.findByTelefoneDddAndTelefoneNumero(telefone.getDdd(), telefone.getNumero());
 		return pessoa.orElseThrow(() ->  new TelefoneNaoEncontradoException());
 	}
 	

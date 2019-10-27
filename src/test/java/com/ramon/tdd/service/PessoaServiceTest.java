@@ -53,7 +53,7 @@ public class PessoaServiceTest {
 		pessoa.setTelefones(new ArrayList());
 		pessoa.getTelefones().add(telefone);
 		when(repository.findByCpf(CPF)).thenReturn(Optional.empty());
-		when(repository.buscarPorTelefoneEDdd(DDD, NUMERO)).thenReturn(Optional.empty());
+		when(repository.findByTelefoneDddAndTelefoneNumero(DDD, NUMERO)).thenReturn(Optional.empty());
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class PessoaServiceTest {
 	
 	@Test(expected = UnicidadeTelefoneException.class)
 	public void naoDeveSalvarDuasPessoasComOMesmoTelefoneNumero() throws Exception{
-		when(repository.buscarPorTelefoneEDdd(DDD,NUMERO)).thenReturn(Optional.of(pessoa));
+		when(repository.findByTelefoneDddAndTelefoneNumero(DDD,NUMERO)).thenReturn(Optional.of(pessoa));
 		
 		sut.salvar(pessoa);
 		
@@ -81,11 +81,11 @@ public class PessoaServiceTest {
 	@Test
 	public void deveProcurarPessoaPorDDDENumeroDoTelefone() throws Exception{
 		
-		when(repository.buscarPorTelefoneEDdd(DDD,NUMERO)).thenReturn(Optional.of(pessoa));
+		when(repository.findByTelefoneDddAndTelefoneNumero(DDD,NUMERO)).thenReturn(Optional.of(pessoa));
 		
 		Pessoa pessoateste = sut.buscarPorTelefone(telefone);
 		
-		verify(repository).buscarPorTelefoneEDdd(DDD, NUMERO);
+		verify(repository).findByTelefoneDddAndTelefoneNumero(DDD, NUMERO);
 		
 		assertThat(pessoateste).isNotNull();
 		assertThat(pessoateste.getNome()).isEqualTo(NOME);
